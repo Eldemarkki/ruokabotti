@@ -1,0 +1,23 @@
+{
+  "name": "ruokabotti",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "deploy:commands": "ts-node deployCommands.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^0.3.0",
+    "axios": "^0.25.0",
+    "date-fns": "^2.28.0",
+    "discord-api-types": "^0.26.1",
+    "discord.js": "^13.6.0",
+    "dotenv": "^15.0.0",
+    "xml-js": "^1.6.11"
+  }
+}
