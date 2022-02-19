@@ -6,6 +6,5 @@ COPY . .
 
 RUN npm install -g ts-node
 RUN npm ci 
-RUN npm run deploy:commands
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "deploy:commands"]
