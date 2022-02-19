@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   bot:
-    image: ruokabotti
+    image: ghcr.io/eldemarkki/ruokabotti:main
     build: 
       context: .
       dockerfile: Dockerfile
