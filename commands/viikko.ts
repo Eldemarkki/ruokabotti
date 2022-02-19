@@ -6,7 +6,7 @@ import { fi } from 'date-fns/locale';
 
 export const data = new SlashCommandBuilder()
   .setName("viikko")
-  .setDescription("Get this week's food")
+  .setDescription("Hae koko viikon ruoka")
   .addIntegerOption((option) => option
     .setName("offset")
     .setDescription("Kuinka monta viikkoa tästä eteen-/taaksepäin")
