@@ -4,6 +4,7 @@ WORKDIR /app/src
 
 COPY . .
 
+RUN sudo ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install -g ts-node
 RUN npm ci 
 
