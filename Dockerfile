@@ -1,10 +1,9 @@
-FROM node:17-alpine
+FROM node
 
 WORKDIR /app/src
 
 COPY . .
 
-RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install -g ts-node
 RUN npm ci 
 
