@@ -1,10 +1,7 @@
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
-import * as dotenv from "dotenv";
 import { data as foodCommand } from "./commands/ruoka";
 import { data as searchCommand } from "./commands/etsi";
-
-dotenv.config();
 
 const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 

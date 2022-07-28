@@ -1,5 +1,4 @@
 import { Client, Intents } from 'discord.js';
-require("dotenv").config();
 
 export const AROMI_URL = process.env.AROMI_URL;
 

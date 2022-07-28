@@ -1,7 +1,6 @@
 var convert = require('xml-js');
 import { format, getWeek } from "date-fns";
 import { AROMI_URL } from "..";
-require("dotenv").config({ path: "../.env" });
 
 type FoodTime = "Aamupala" | "Lounas" | "Kasvislounas";
 
