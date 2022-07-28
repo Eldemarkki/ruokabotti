@@ -1,5 +1,4 @@
 var convert = require('xml-js');
-import axios from "axios";
 import { format, getWeek } from "date-fns";
 import { AROMI_URL } from "..";
 require("dotenv").config({ path: "../.env" });
@@ -35,13 +34,9 @@ export const retrieveData = async (dateMode: number) => {
   console.log("Retrieving data");
   if (dateMode <= 0) return null;
 
-  const data = await axios.get(String(AROMI_URL), {
-    params: {
-      DateMode: dateMode
-    }
-  })
-
-  var result = JSON.parse(convert.xml2json(data.data, { compact: true, spaces: 4 }));
+  const response = await fetch(AROMI_URL + "&DateMode=" + dateMode);
+  const data = await response.text();
+  var result = JSON.parse(convert.xml2json(data, { compact: true, spaces: 4 }));
   if (!(result && result.rss && result.rss.channel && result.rss.channel.item)) return null;
 
   const d: DayMenu[] = result.rss.channel.item.map((dayFood: any) => {
