@@ -1,10 +1,12 @@
-FROM node
+FROM node:18-alpine
 
-WORKDIR /app/src
+WORKDIR /app
 
-COPY . .
-
-RUN npm install -g ts-node
+COPY package.json .
+COPY package-lock.json .
 RUN npm ci 
 
-CMD ["npm", "run", "deploy:commands"]
+COPY . .
+RUN npm run tsc
+
+CMD ["npm", "run", "start"]
