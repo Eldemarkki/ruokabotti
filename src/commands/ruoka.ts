@@ -13,7 +13,8 @@ export const data = new SlashCommandBuilder()
   );
 
 export const handle = async (interaction: CommandInteraction<CacheType>) => {
-  const offset = interaction.options.getInteger("päivä", false) || 0;
+  const offsetValue = interaction.options.get("päivä", false)?.value || 0;
+  const offset = Number(offsetValue);
   const date = add(new Date(), { days: offset });
   const food = await getFood(date);
   if (food && food.menu && food.menu["Lounas"]) {

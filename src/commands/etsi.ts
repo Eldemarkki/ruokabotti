@@ -14,7 +14,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export const handle = async (interaction: CommandInteraction<CacheType>) => {
-  const keyword = interaction.options.getString("hakusana") || "";
+  const keyword = interaction.options.get("hakusana")?.value || "";
   const lines: string[] = [];
   const startWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
   let i = 0;
@@ -32,7 +32,7 @@ export const handle = async (interaction: CommandInteraction<CacheType>) => {
       }
       const d = format(date, "EEEE d.L.y", { locale: fi });
       const start = d[0].toLocaleUpperCase() + d.slice(1);
-      if (food && food.menu && food.menu["Lounas"] && food.menu["Lounas"].toLowerCase().includes(keyword)) {
+      if (food && food.menu && food.menu["Lounas"] && food.menu["Lounas"].toLowerCase().includes(String(keyword))) {
         lines.push(`${start}: **${food.menu["Lounas"]}**`);
       }
     }

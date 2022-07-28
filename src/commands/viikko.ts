@@ -14,7 +14,8 @@ export const data = new SlashCommandBuilder()
 
 export const handle = async (interaction: CommandInteraction<CacheType>) => {
   const lines = [];
-  const offset = interaction.options.getInteger("offset", false) || 0;
+  const offsetValue = interaction.options.get("offset", false)?.value || 0;
+  const offset = Number(offsetValue);
 
   for (let i = 0; i < 5; i++) {
     const startWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
