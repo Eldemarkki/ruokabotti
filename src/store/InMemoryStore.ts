@@ -1,33 +1,32 @@
-var convert = require('xml-js');
+var convert = require("xml-js");
 import { format, getWeek } from "date-fns";
 import { AROMI_URL } from "..";
 
 type FoodTime = "Aamupala" | "Lounas" | "Kasvislounas";
 
 interface DayMenu {
-  date: string,
-  menu: Record<FoodTime, string>
+  date: string;
+  menu: Record<FoodTime, string>;
 }
 
-const menuData: { [key: string]: DayMenu } = {}
+const menuData: { [key: string]: DayMenu } = {};
 
-const parseFood = (food: string): { time: FoodTime, food: string } => {
+const parseFood = (food: string): { time: FoodTime; food: string } => {
   let parsed = food;
   while (parsed.includes(" :")) {
-    parsed = parsed.replace(" :", ":")
+    parsed = parsed.replace(" :", ":");
   }
 
-  const [time, content] = parsed.split(": ");
+  const [time, content] = parsed.split(":").map((s) => s.trim());
   if (time === "Aamupala" || time === "Lounas" || time === "Kasvislounas") {
     return {
       time,
-      food: content
+      food: content,
     };
+  } else {
+    throw new Error(`Unknown food time ${time.toString()}`);
   }
-  else {
-    throw new Error(`Unknown food time ${time}`);
-  }
-}
+};
 
 export const retrieveData = async (dateMode: number) => {
   console.log("Retrieving data");
@@ -36,7 +35,8 @@ export const retrieveData = async (dateMode: number) => {
   const response = await fetch(AROMI_URL + "&DateMode=" + dateMode);
   const data = await response.text();
   var result = JSON.parse(convert.xml2json(data, { compact: true, spaces: 4 }));
-  if (!(result && result.rss && result.rss.channel && result.rss.channel.item)) return null;
+  if (!(result && result.rss && result.rss.channel && result.rss.channel.item))
+    return null;
 
   const d: DayMenu[] = result.rss.channel.item.map((dayFood: any) => {
     const date = String(dayFood.title._text).substring(3);
@@ -44,31 +44,33 @@ export const retrieveData = async (dateMode: number) => {
     const foods = menu.split("<br>");
 
     const parsedFoods = foods.reduce((prev, line) => {
+      if (line.trim() === "") return prev;
+
       const food = parseFood(line);
       return {
         ...prev,
-        [food.time]: food.food.replace(/\s{2,}/, " ")
-      }
+        [food.time]: food.food.replace(/\s{2,}/, " "),
+      };
     }, {});
-    return { date, menu: parsedFoods }
+    return { date, menu: parsedFoods };
   });
 
-  d.forEach(day => {
-    menuData[day.date] = day
-  })
+  d.forEach((day) => {
+    menuData[day.date] = day;
+  });
 
   return menuData;
-}
+};
 
 export const getFood = async (date: Date) => {
   const d = format(date, "d.L.yyyy");
 
   if (!Object.keys(menuData).includes(d)) {
     const currentWeek = getWeek(new Date(), { weekStartsOn: 1 });
-    const dateWeek = getWeek(date, { weekStartsOn: 1 })
+    const dateWeek = getWeek(date, { weekStartsOn: 1 });
     const dateMode = dateWeek - currentWeek + 1;
     await retrieveData(dateMode);
   }
 
   return menuData[d] || null;
-}
+};
